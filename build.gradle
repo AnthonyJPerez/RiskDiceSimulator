@@ -1,0 +1,28 @@
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+mainClassName = 'brix.RiskDiceSimulator'
+
+repositories {
+	mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile "io.reactivex:rxjava:1.0.12"
+	compile 'io.reactivex:rxjava-math:1.0.0'
+}
+
+jar {
+	baseName = 'gs-gradle'
+	version = '0.1.0'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.4'
+}
+
