@@ -4,14 +4,14 @@ package brix.risk;
 public class Statistics
 {
 	private Boolean attackerWon;
-	private Double attackerArmiesLostPercentage;
-	private Double defenderArmiesLostPercentage;
+	private Double attackerArmiesPercentRemaining;
+	private Double defenderArmiesPercentRemaining;
 
 	public Statistics()
 	{
 		attackerWon = false;
-		attackerArmiesLostPercentage = 0.0;
-		defenderArmiesLostPercentage = 0.0;
+		attackerArmiesPercentRemaining = 0.0;
+		defenderArmiesPercentRemaining = 0.0;
 	}
 
 	public Boolean getAttackerWon()
@@ -24,23 +24,23 @@ public class Statistics
 		this.attackerWon = attackerWon;
 	}
 
-	public void setAttackerArmiesLostPercentage(final Double armiesLostPercentage)
+	public void setAttackerArmiesPercentRemaining(final Double armiesPercentRemaining)
 	{
-		this.attackerArmiesLostPercentage = armiesLostPercentage;
+		this.attackerArmiesPercentRemaining = armiesPercentRemaining;
 	}
 
-	public Double getAttackerArmiesLostPercentage()
+	public Double getAttackerArmiesPercentRemaining()
 	{
-		return this.attackerArmiesLostPercentage;
+		return this.attackerArmiesPercentRemaining;
 	}
 
-	public void setDefenderArmiesLostPercentage(final Double armiesLostPercentage)
+	public void setDefenderArmiesPercentRemaining(final Double armiesPercentRemaining)
 	{
-		this.defenderArmiesLostPercentage = armiesLostPercentage;
+		this.defenderArmiesPercentRemaining = armiesPercentRemaining;
 	}
 
-	public Double getDefenderArmiesLostPercentage()
+	public Double getDefenderArmiesPercentRemaining()
 	{
-		return this.defenderArmiesLostPercentage;
+		return this.defenderArmiesPercentRemaining;
 	}
 }

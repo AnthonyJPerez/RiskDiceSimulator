@@ -49,8 +49,8 @@ public class RiskSimulation
 
 	private void runTick(Player attacker, Player defender)
 	{
-		System.out.println("Attacker armies before: " + attacker.getArmies());
-		System.out.println("Defender armies before: " + defender.getArmies());
+		//System.out.println("Attacker armies before: " + attacker.getArmies());
+		//System.out.println("Defender armies before: " + defender.getArmies());
 
 		// Get the attacker dice. In Risk, the attacker cannot attack with 1 army.
 		Integer numAttackDice = getDice(attacker.getArmies()-1, attacker.getRuleset().getNumDice());
@@ -62,8 +62,8 @@ public class RiskSimulation
 		List<Integer> attackerDieRolls = getDieRolls(attacker, numAttackDice);
 		List<Integer> defenderDieRolls = getDieRolls(defender, numDefendDice);
 
-		System.out.println("Attacker rolls: " + attackerDieRolls.toString());
-		System.out.println("Defender rolls: " + defenderDieRolls.toString());
+		//System.out.println("Attacker rolls: " + attackerDieRolls.toString());
+		//System.out.println("Defender rolls: " + defenderDieRolls.toString());
 
 		// Zip together the sorted die rolls together, pairing the highest
 		// attack die with the highest defend die, and so on.
@@ -88,9 +88,9 @@ public class RiskSimulation
 			.count()
 			.subscribe(numDefenderWins -> attacker.setArmies(attacker.getArmies() - numDefenderWins));
 	
-		System.out.println("Attacker armies after: " + attacker.getArmies());
-		System.out.println("Defender armies after: " + defender.getArmies());
-		System.out.println("\n");
+		//System.out.println("Attacker armies after: " + attacker.getArmies());
+		//System.out.println("Defender armies after: " + defender.getArmies());
+		//System.out.println("\n");
 	}
 
 	public Statistics run (Player attacker, Player defender)
@@ -103,7 +103,7 @@ public class RiskSimulation
 			// If the defender's armies are 0, then the attacker was taken the country!
 			if (defender.getArmies() == 0)
 			{
-				System.out.println("Defender has no armies left!");
+				//System.out.println("Defender has no armies left!");
 				stats.setAttackerWon(true);
 				done = true;
 			}
@@ -118,7 +118,7 @@ public class RiskSimulation
 				|| (attacker.getArmies() <= 1)
 			)
 			{
-				System.out.println("Either Attacker has no armies left, or attacker/defender has hit their minimum threshold.");
+				//System.out.println("Either Attacker has no armies left, or attacker/defender has hit their minimum threshold.");
 				done = true;
 			}
 			else
@@ -129,8 +129,8 @@ public class RiskSimulation
 		} while (!done);
 
 		// Set the final stats.
-		stats.setAttackerArmiesLostPercentage(new Double(attacker.getArmies() / attacker.getInitialArmies()));
-		stats.setDefenderArmiesLostPercentage(new Double(defender.getArmies() / defender.getInitialArmies()));
+		stats.setAttackerArmiesPercentRemaining(new Double(attacker.getArmies()) / new Double(attacker.getInitialArmies()));
+		stats.setDefenderArmiesPercentRemaining(new Double(defender.getArmies()) / new Double(defender.getInitialArmies()));
 
 		return stats;
 	}
