@@ -9,6 +9,7 @@ import brix.risk.RiskSimulation;
 import rx.Observable;
 import rx.observables.ConnectableObservable;
 import rx.observables.MathObservable;
+import rx.schedulers.Schedulers;
 
 
 public class RiskDiceSimulator
