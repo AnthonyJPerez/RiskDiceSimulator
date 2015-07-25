@@ -15,19 +15,18 @@ import rx.schedulers.Schedulers;
 public class RiskDiceSimulator
 {
 	public static void main(String [] args)
-	{
-		final Integer numSimulations = 10000;
+	{	
+		Ruleset attackerRules = new Ruleset();
+		attackerRules.setNumDice(3); // Attack using three die
+		attackerRules.setNumDieFaces(6); // Each die is a 6-sided die
+		
+		Ruleset defenderRules = new Ruleset();
+		defenderRules.setNumDice(2); // Defend using two die
+		defenderRules.setNumDieFaces(6); // Each die is a 6-sided die
+
 		final Integer initialAttackerArmies = 10;
 		final Integer initialDefenderArmies = 8;
 		
-		Ruleset attackerRules = new Ruleset(3, 6);
-		//attackerRules.setNumDice(3); // Attack using three die
-		//attackerRules.setNumDieFaces(6); // Each die is a 6-sided die
-		
-		Ruleset defenderRules = new Ruleset(2, 6);
-		//defenderRules.setNumDice(2); // Defend using two die
-		//defenderRules.setNumDieFaces(6); // Each die is a 6-sided die
-
 		Player attacker = new Player(attackerRules, initialAttackerArmies, 3);
 		Player defender = new Player(defenderRules, initialDefenderArmies, 0);
 
@@ -41,7 +40,7 @@ public class RiskDiceSimulator
 		// cause a whole new set of items being emitted, instead of
 		// each subscriber getting handed the same emitted items.
 		ConnectableObservable<Statistics> simulationOutcomes = Observable
-			.range(1, numSimulations)
+			.range(1, RiskSimulation.DEFAULT_SIMULATION_COUNT)
 			.map((x) -> simulation.run(attacker, defender))
 			.publish();
 

@@ -16,6 +16,7 @@ import rx.Observable;
 /** Simulates a risk battle where the attacker fights the defender based on their respective rules. */
 public class RiskSimulation
 {
+	public static Integer DEFAULT_SIMULATION_COUNT = 10000;
 	private Random random;
 
 	public RiskSimulation()
