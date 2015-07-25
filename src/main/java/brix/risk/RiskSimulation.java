@@ -132,6 +132,9 @@ public class RiskSimulation
 		stats.setAttackerArmiesPercentRemaining(new Double(attacker.getArmies()) / new Double(attacker.getInitialArmies()));
 		stats.setDefenderArmiesPercentRemaining(new Double(defender.getArmies()) / new Double(defender.getInitialArmies()));
 
+		// Restore the attacker and defender back to their original state prior to running the simulation.
+		attacker.reset();
+		defender.reset();
 		return stats;
 	}
 }

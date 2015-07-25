@@ -21,6 +21,11 @@ public class Player
 		this.rules = rules;
 	}
 
+	public void reset()
+	{
+		this.armies = this.initialArmies;
+	}
+
 	public Ruleset getRuleset()
 	{
 		return this.rules;

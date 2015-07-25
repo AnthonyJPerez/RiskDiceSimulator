@@ -19,8 +19,18 @@ public class RiskDiceSimulator
 		final Integer numSimulations = 10000;
 		final Integer initialAttackerArmies = 10;
 		final Integer initialDefenderArmies = 8;
+		
 		Ruleset attackerRules = new Ruleset(3, 6);
+		//attackerRules.setNumDice(3); // Attack using three die
+		//attackerRules.setNumDieFaces(6); // Each die is a 6-sided die
+		
 		Ruleset defenderRules = new Ruleset(2, 6);
+		//defenderRules.setNumDice(2); // Defend using two die
+		//defenderRules.setNumDieFaces(6); // Each die is a 6-sided die
+
+		Player attacker = new Player(attackerRules, initialAttackerArmies, 3);
+		Player defender = new Player(defenderRules, initialDefenderArmies, 0);
+
 		RiskSimulation simulation = new RiskSimulation();
 		
 		// Run the simulations. The .publish() at the end makes this a
@@ -28,14 +38,11 @@ public class RiskDiceSimulator
 		// anything until all of the subscribers are setup and we explicitly
 		// call .connect(). If we don't do this, each subscriber will cause
 		// this Observable to emit items, and the next subscription will
-		// cause a whole other set of items being emitted, instead of
+		// cause a whole new set of items being emitted, instead of
 		// each subscriber getting handed the same emitted items.
 		ConnectableObservable<Statistics> simulationOutcomes = Observable
 			.range(1, numSimulations)
-			.map((x) -> simulation.run(
-				new Player(attackerRules, initialAttackerArmies, 3), 
-				new Player(defenderRules, initialDefenderArmies, 0))
-				)
+			.map((x) -> simulation.run(attacker, defender))
 			.publish();
 
 		// Calculate the average number of times the Simulations returned with a win.
