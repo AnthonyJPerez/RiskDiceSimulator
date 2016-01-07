@@ -11,11 +11,15 @@ import rx.observables.ConnectableObservable;
 import rx.observables.MathObservable;
 import rx.schedulers.Schedulers;
 
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RestController
 public class RiskDiceSimulator
-{
-	public static void main(String [] args)
-	{	
+{	
+	@RequestMapping("/")
+	String home() {
+		final StringBuilder sbOutput = new StringBuilder();
 		Integer numSimulations = RiskSimulation.DEFAULT_SIMULATION_COUNT;
 		Ruleset attackerRules = new Ruleset();
 		attackerRules.setNumDice(3); // Attack using three die
@@ -60,7 +64,7 @@ public class RiskDiceSimulator
 
 		// Subscribe to our averageWins stream and print out the result.
 		averageWins.subscribe(
-			winAverage -> System.out.println(
+			winAverage -> sbOutput.append(
 				String.format(
 					"Avg attacker wins: %.0f%% (%.0f wins)", 
 					(winAverage * 100), (winAverage * numSimulations))));
@@ -82,7 +86,7 @@ public class RiskDiceSimulator
 		// Subscribe to the average attacker armies remaining observable, and 
 		// print out the result.
 		avgAttackerArmiesRemaining.subscribe(
-			armiesRemaining -> System.out.println(
+			armiesRemaining -> sbOutput.append(
 				String.format(
 					"Avg attacker armies remaining on wins: %.0f%% (%.0f armies)",
 					(100 * armiesRemaining), (armiesRemaining * initialAttackerArmies))));
@@ -98,15 +102,16 @@ public class RiskDiceSimulator
 		// Subscribe to the average defender armies remaining observable, and 
 		// print out the result.
 		averageDefenderArmyLoss.subscribe(
-			armiesRemaining -> System.out.println(
+			armiesRemaining -> sbOutput.append(
 				String.format(
 					"Avg defender armies remaining on losses: %.0f%% (%.0f armies)",
 					(100 * armiesRemaining), (armiesRemaining * initialDefenderArmies))));
 	
 		// Now that all of our subscribers are setup, start emitting the results of 
 		// the simulations.
-		System.out.println(String.format("Running %d Simulations...", numSimulations));
+		sbOutput.append(String.format("Running %d Simulations...", numSimulations));
 		simulationOutcomes.connect();
-		System.out.println("Finished running the simulations.");
+		sbOutput.append("Finished running the simulations.");
+		return sbOutput.toString();
 	}
 }
