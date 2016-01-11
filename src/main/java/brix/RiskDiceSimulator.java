@@ -1,7 +1,9 @@
 
 package brix;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import brix.risk.Player;
 import brix.risk.RiskSimulation;
@@ -13,25 +15,30 @@ import rx.observables.MathObservable;
 
 
 @RestController
+@RequestMapping("/simulate")
 public class RiskDiceSimulator
 {
-    @RequestMapping("/")
-    public StatsOutput home ()
+    @RequestMapping(value = "/iterations/{numSimulations}/A-Armies/{initialAttackerArmies}/A-Dice/{attackerDice}/A-DiceType/{attackerDiceType}/D-Armies/{initialDefenderArmies}/D-Dice/{defenderDice}/D-DiceType/{defenderDiceType}", method = RequestMethod.GET)
+    public StatsOutput runSimulation (
+                                      @PathVariable Integer numSimulations,
+                                      @PathVariable Integer initialAttackerArmies,
+                                      @PathVariable Integer attackerDice,
+                                      @PathVariable Integer attackerDiceType,
+                                      @PathVariable Integer initialDefenderArmies,
+                                      @PathVariable Integer defenderDice,
+                                      @PathVariable Integer defenderDiceType)
     {
         final StringBuilder sbOutput = new StringBuilder();
         StatsOutput statsOutput = new StatsOutput();
 
-        Integer numSimulations = RiskSimulation.DEFAULT_SIMULATION_COUNT;
+        // Default == RiskSimulation.DEFAULT_SIMULATION_COUNT;
         Ruleset attackerRules = new Ruleset();
-        attackerRules.setNumDice(3); // Attack using three die
-        attackerRules.setNumDieFaces(6); // Each die is a 6-sided die
+        attackerRules.setNumDice(attackerDice);
+        attackerRules.setNumDieFaces(attackerDiceType);
 
         Ruleset defenderRules = new Ruleset();
-        defenderRules.setNumDice(2); // Defend using two die
-        defenderRules.setNumDieFaces(6); // Each die is a 6-sided die
-
-        final Integer initialAttackerArmies = 11;
-        final Integer initialDefenderArmies = 7;
+        defenderRules.setNumDice(defenderDice);
+        defenderRules.setNumDieFaces(defenderDiceType);
 
         Player attacker = new Player(attackerRules, initialAttackerArmies, 3);
         Player defender = new Player(defenderRules, initialDefenderArmies, 0);
