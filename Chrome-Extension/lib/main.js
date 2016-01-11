@@ -34,13 +34,13 @@ function popupMessageHandler (parameters, sender, replyToPopup)
 	var url = [
 		"https://lit-anchorage-1848.herokuapp.com",
 		"simulate", 
-		"iterations", 10000, 
-		"A-Armies", 10, 
-		"A-Dice", 3,
-		"A-DiceType", 6,
-		"D-Armies", 5,
-		"D-Dice", 2,
-		"D-DiceType", 6
+		"iterations", parameters.total_simulation_count, 
+		"A-Armies", parameters.attacker_armies, 
+		"A-Dice", parameters.attacker_die_count,
+		"A-DiceType", parameters.attacker_die_type,
+		"D-Armies", parameters.defender_armies,
+		"D-Dice", parameters.defender_die_count,
+		"D-DiceType", parameters.defender_die_type
 		].join("/");
 		
 	_Log("About to request: %O", url);
