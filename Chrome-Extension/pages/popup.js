@@ -17,16 +17,33 @@ function convertFormToJson(form)
 }
 
 
+function showResponse(response)
+{
+	var sim = $('#simulationResponse');
+	for (fieldName in response) {
+		$('#'+fieldName, sim).text(response[fieldName]);
+		console.log("%O: %O", fieldName, response[fieldName]);
+	}
+
+	sim.show();
+}
+
+
 function runSimulation()
 {
 	console.log("Running the simulation");
 
 	// Grab the form parameters
 	var formArray = $("#simulationForm").serializeArray();
-	var json = convertFormToJson(formArray);
-	console.log("form JSON:", json);
+	var simParams = convertFormToJson(formArray);
+	console.log("form JSON:", simParams);
 
-	chrome.runtime.sendMessage(json);
+	chrome.runtime.sendMessage(
+		simParams,
+		function(response) {
+			console.log("Background returned %O to popup.", response);
+			showResponse(response);
+		});
 
 	// Don't reset the form.
 	return false;
@@ -39,6 +56,7 @@ function main()
 
 	// Setup the onclick handler for our simulate button
 	$("#simulate").click(runSimulation);
+	$("#simulationResponse").hide();
 }
 
 

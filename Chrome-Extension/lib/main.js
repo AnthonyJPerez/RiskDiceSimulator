@@ -22,10 +22,10 @@ $.when(dom_loaded).then(main);
 
 // Callback function to handle messages received from the popup. The
 // popup will send simulation parameters submitted by the user.
-function popupMessageHandler (parameters, sender, responder)
+function popupMessageHandler (parameters, sender, replyToPopup)
 {
 	_Instrument("popupMessageHandler");
-	_Log("Received message from popup -- parameters: %O, sender: %O, responder: %O", parameters, sender, responder);
+	_Log("Received message from popup -- parameters: %O, sender: %O, replyToPopup: %O", parameters, sender, replyToPopup);
 	
 	// Perform an AJAX request here to the server. The path is as follows:
 	// 
@@ -42,18 +42,23 @@ function popupMessageHandler (parameters, sender, responder)
 		"D-Dice", 2,
 		"D-DiceType", 6
 		].join("/");
+		
 	_Log("About to request: %O", url);
 	$.ajax({
 		url: url
 	})
 	.done(function(data) {
 		_Log("Received response from server: %O", data);
+		replyToPopup(data);
 	})
 	.fail(function() {
 		alert("Ajax failed to fetch data.");
 	});
-	
 	_InstrumentEnd();
+	
+	// True allows the replyToPopup reponse handler to stay alive
+	// and allow its use in an asynchronous fashion.
+	return true;
 }
 
 

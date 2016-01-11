@@ -18,9 +18,9 @@ import rx.observables.MathObservable;
 @RequestMapping("/simulate")
 public class RiskDiceSimulator
 {
-    @RequestMapping(value = "/iterations/{numSimulations}/A-Armies/{initialAttackerArmies}/A-Dice/{attackerDice}/A-DiceType/{attackerDiceType}/D-Armies/{initialDefenderArmies}/D-Dice/{defenderDice}/D-DiceType/{defenderDiceType}", method = RequestMethod.GET)
+    @RequestMapping(value = "/iterations/{iterations}/A-Armies/{initialAttackerArmies}/A-Dice/{attackerDice}/A-DiceType/{attackerDiceType}/D-Armies/{initialDefenderArmies}/D-Dice/{defenderDice}/D-DiceType/{defenderDiceType}", method = RequestMethod.GET)
     public StatsOutput runSimulation (
-                                      @PathVariable Integer numSimulations,
+                                      @PathVariable Integer iterations,
                                       @PathVariable Integer initialAttackerArmies,
                                       @PathVariable Integer attackerDice,
                                       @PathVariable Integer attackerDiceType,
@@ -42,6 +42,8 @@ public class RiskDiceSimulator
 
         Player attacker = new Player(attackerRules, initialAttackerArmies, 3);
         Player defender = new Player(defenderRules, initialDefenderArmies, 0);
+        statsOutput.setInitialAttackerArmies(initialAttackerArmies);
+        statsOutput.setInitialDefenderArmies(initialDefenderArmies);
 
         RiskSimulation simulation = new RiskSimulation();
 
@@ -53,7 +55,7 @@ public class RiskDiceSimulator
         // cause a whole new set of items being emitted, instead of
         // each subscriber getting handed the same emitted items.
         ConnectableObservable<Statistics> simulationOutcomes = Observable
-                                                                         .range(1, numSimulations)
+                                                                         .range(1, iterations)
                                                                          .map( (x) -> simulation.run(attacker,
                                                                                                      defender))
                                                                          .publish();
@@ -76,7 +78,7 @@ public class RiskDiceSimulator
         // Subscribe to our averageWins stream and print out the result.
         averageWins.subscribe(
                               winAverage -> {
-                                  statsOutput.setAvgAttackerWins((int) Math.floor(winAverage * numSimulations));
+                                  statsOutput.setAvgAttackerWins((int) Math.floor(winAverage * iterations));
                                   statsOutput.setAvgAttackerWinsPercent(winAverage);
                               });
 
@@ -123,11 +125,11 @@ public class RiskDiceSimulator
         // Now that all of our subscribers are setup, start emitting the results
         // of
         // the simulations.
-        sbOutput.append(String.format("Running %d Simulations...", numSimulations));
+        sbOutput.append(String.format("Running %d Simulations...", iterations));
         simulationOutcomes.connect();
         sbOutput.append("Finished running the simulations.");
 
-        statsOutput.setNumSimulations(numSimulations);
+        statsOutput.setIterations(iterations);
         return statsOutput;
     }
 }

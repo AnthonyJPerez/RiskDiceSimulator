@@ -6,13 +6,18 @@ import brix.risk.RiskSimulation;
 
 public class StatsOutput
 {
+    // Results
     private Integer avgAttackerWins;
     private Double  avgAttackerWinsPercent;
     private Integer avgAttackerArmiesRemaining;
     private Double  avgAttackerArmiesRemainingPercent;
     private Integer avgDefenderArmiesRemaining;
     private Double  avgDefenderArmiesRemainingPercent;
-    private Integer numSimulations;
+
+    // Parameters
+    private Integer iterations;
+    private Integer initialAttackerArmies;
+    private Integer initialDefenderArmies;
 
     public StatsOutput (final Integer avgAttackerWins,
                         final Double avgAttackerWinsPercent,
@@ -20,7 +25,9 @@ public class StatsOutput
                         final Double avgAttackerArmiesRemainingPercent,
                         final Integer avgDefenderArmiesRemaining,
                         final Double avgDefenderArmiesRemainingPercent,
-                        final Integer numSimulations)
+                        final Integer numSimulations,
+                        final Integer initialAttackerArmies,
+                        final Integer initialDefenderArmies)
     {
         this.avgAttackerWins = avgAttackerWins;
         this.avgAttackerWinsPercent = avgAttackerWinsPercent;
@@ -28,7 +35,9 @@ public class StatsOutput
         this.avgAttackerArmiesRemainingPercent = avgAttackerArmiesRemainingPercent;
         this.avgDefenderArmiesRemaining = avgDefenderArmiesRemaining;
         this.avgDefenderArmiesRemainingPercent = avgDefenderArmiesRemainingPercent;
-        this.numSimulations = numSimulations;
+        this.iterations = numSimulations;
+        this.initialAttackerArmies = initialAttackerArmies;
+        this.initialDefenderArmies = initialDefenderArmies;
     }
 
     public StatsOutput ()
@@ -39,7 +48,9 @@ public class StatsOutput
         avgAttackerArmiesRemainingPercent = 0.0;
         avgDefenderArmiesRemaining = 0;
         avgDefenderArmiesRemainingPercent = 0.0;
-        numSimulations = RiskSimulation.DEFAULT_SIMULATION_COUNT;
+        iterations = RiskSimulation.DEFAULT_SIMULATION_COUNT;
+        initialAttackerArmies = 0;
+        initialDefenderArmies = 0;
     }
 
     public Integer getAvgAttackerWins ()
@@ -102,13 +113,34 @@ public class StatsOutput
         this.avgDefenderArmiesRemainingPercent = avgDefenderArmiesRemainingPercent;
     }
 
-    public Integer getNumSimulations ()
+    public Integer getIterations ()
     {
-        return numSimulations;
+        return iterations;
     }
 
-    public void setNumSimulations (Integer numSimulations)
+    public void setIterations (Integer iterations)
     {
-        this.numSimulations = numSimulations;
+        this.iterations = iterations;
     }
+
+    public Integer getInitialAttackerArmies ()
+    {
+        return initialAttackerArmies;
+    }
+
+    public void setInitialAttackerArmies (Integer initialAttackerArmies)
+    {
+        this.initialAttackerArmies = initialAttackerArmies;
+    }
+
+    public Integer getInitialDefenderArmies ()
+    {
+        return initialDefenderArmies;
+    }
+
+    public void setInitialDefenderArmies (Integer initialDefenderArmies)
+    {
+        this.initialDefenderArmies = initialDefenderArmies;
+    }
+
 }

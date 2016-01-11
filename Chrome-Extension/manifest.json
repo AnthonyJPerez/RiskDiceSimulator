@@ -27,6 +27,7 @@
 	},
 	"permissions": 
 	[
-		"https://lit-anchorage-1848.herokuapp.com/*"
+		"https://lit-anchorage-1848.herokuapp.com/*",
+		"activeTab"
 	]
 }
