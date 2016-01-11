@@ -31,6 +31,14 @@ public class RiskDiceSimulator
         final StringBuilder sbOutput = new StringBuilder();
         StatsOutput statsOutput = new StatsOutput();
 
+        // Input validation
+        if (iterations > RiskSimulation.MAX_SIMULATION_COUNT)
+        {
+            iterations = RiskSimulation.MAX_SIMULATION_COUNT;
+        }
+
+        final Integer totalIterations = iterations;
+
         // Default == RiskSimulation.DEFAULT_SIMULATION_COUNT;
         Ruleset attackerRules = new Ruleset();
         attackerRules.setNumDice(attackerDice);
@@ -55,7 +63,7 @@ public class RiskDiceSimulator
         // cause a whole new set of items being emitted, instead of
         // each subscriber getting handed the same emitted items.
         ConnectableObservable<Statistics> simulationOutcomes = Observable
-                                                                         .range(1, iterations)
+                                                                         .range(1, totalIterations)
                                                                          .map( (x) -> simulation.run(attacker,
                                                                                                      defender))
                                                                          .publish();
@@ -78,7 +86,7 @@ public class RiskDiceSimulator
         // Subscribe to our averageWins stream and print out the result.
         averageWins.subscribe(
                               winAverage -> {
-                                  statsOutput.setAvgAttackerWins((int) Math.floor(winAverage * iterations));
+                                  statsOutput.setAvgAttackerWins((int) Math.floor(winAverage * totalIterations));
                                   statsOutput.setAvgAttackerWinsPercent(winAverage);
                               });
 
@@ -125,11 +133,11 @@ public class RiskDiceSimulator
         // Now that all of our subscribers are setup, start emitting the results
         // of
         // the simulations.
-        sbOutput.append(String.format("Running %d Simulations...", iterations));
+        sbOutput.append(String.format("Running %d Simulations...", totalIterations));
         simulationOutcomes.connect();
         sbOutput.append("Finished running the simulations.");
 
-        statsOutput.setIterations(iterations);
+        statsOutput.setIterations(totalIterations);
         return statsOutput;
     }
 }

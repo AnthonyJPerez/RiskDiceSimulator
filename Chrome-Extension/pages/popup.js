@@ -25,13 +25,16 @@ function showResponse(response)
 		console.log("%O: %O", fieldName, response[fieldName]);
 	}
 
-	sim.show();
+	sim.fadeIn();
 }
 
 
 function runSimulation()
 {
 	console.log("Running the simulation");
+	
+	// Clear any previous results
+	$("#simulationResponse").hide();
 
 	// Grab the form parameters
 	var formArray = $("#simulationForm").serializeArray();
